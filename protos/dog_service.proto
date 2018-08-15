@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+import "dogs.proto";
+
+// A service consumes/returns a protobuf
+// format: 'rpc <rpc_name> (<input_proto>) returns (<output_proto>)'
+service DogService {
+    rpc PetDog (Dog) returns (ServiceResponse) {}
+}
+
+message ServiceResponse {
+    string message = 1;
+}
