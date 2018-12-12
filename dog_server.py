@@ -41,7 +41,11 @@ class DogInterface(DogServiceServicer):
 def serve():
     server = grpc.server(ThreadPoolExecutor())
     add_DogServiceServicer_to_server(DogInterface(), server)
-    server.add_insecure_port('[::]:50051')
+    private_key = open('server.key').read().encode('utf8')
+    cert_chain = open('server.crt').read().encode('utf8')
+    server_credentials = grpc.ssl_server_credentials(((private_key, cert_chain),))
+    # server.add_insecure_port('[::]:50051')
+    server.add_secure_port('localhost:50051', server_credentials)
     server.start()
     try:
         while True:
